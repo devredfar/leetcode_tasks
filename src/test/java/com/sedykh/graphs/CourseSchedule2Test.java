@@ -1,15 +1,18 @@
 package com.sedykh.graphs;
 
-import java.util.Arrays;
+import com.sedykh.topological_sort.CourseSchedule2;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
 
 class CourseSchedule2Test {
 
     @Nested
     class MySolution {
 
+        @Test
         void findOrder1() {
             int[] actual = new CourseSchedule2.MySolution().findOrder(1, new int[][]{});
             Assertions.assertArrayEquals(new int[]{0}, actual);

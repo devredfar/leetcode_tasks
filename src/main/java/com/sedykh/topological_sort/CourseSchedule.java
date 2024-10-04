@@ -1,11 +1,6 @@
-package com.sedykh.graphs;
+package com.sedykh.topological_sort;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 207. Course Schedule

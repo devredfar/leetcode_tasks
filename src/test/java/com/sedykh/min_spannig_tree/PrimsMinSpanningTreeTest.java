@@ -1,10 +1,11 @@
-package com.sedykh.prims_min_spannig_tree;
+package com.sedykh.min_spannig_tree;
 
 import com.sedykh.TestUtils;
-import java.util.ArrayList;
-import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class PrimsMinSpanningTreeTest {
 

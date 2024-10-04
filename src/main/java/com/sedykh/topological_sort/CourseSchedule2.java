@@ -1,12 +1,6 @@
-package com.sedykh.graphs;
+package com.sedykh.topological_sort;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 210. Course Schedule II
@@ -74,6 +68,7 @@ public class CourseSchedule2 {
 
     public static class MySolutionTopologicalSort {
 
+        @SuppressWarnings("unchecked")
         public int[] findOrder(int numCourses, int[][] prerequisites) {
             List<Integer>[] courses = new List[numCourses];
             int[] frequency = new int[numCourses];
@@ -116,6 +111,7 @@ public class CourseSchedule2 {
 
     public static class LeetcodeSolution {
 
+        @SuppressWarnings("unchecked")
         public int[] findOrder(final int numCourses, final int[][] prerequisites) {
             final List<Integer>[] courses = new List[numCourses];
             final int[] dependenciesOnCourseCount = new int[numCourses];

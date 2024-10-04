@@ -1,14 +1,6 @@
-package com.sedykh.prims_min_spannig_tree;
+package com.sedykh.min_spannig_tree;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 1584. Min Cost to Connect All Points
@@ -24,7 +16,102 @@ import java.util.Set;
  */
 public class MinCostConnectPoints {
 
-    public static class MySolution {
+    public static class MySolution_Kruskals {
+        public int minCostConnectPoints(int[][] points) {
+            if (points.length == 1) {
+                return 0;
+            }
+            Point[] pointsObj = new Point[points.length];
+            for (int i = 0; i < points.length; i++) {
+                pointsObj[i] = Point.of(points[i]);
+            }
+            HashMap<Point, Integer> pointsParsed = new HashMap<>();
+            for (int i = 0; i < pointsObj.length; i++) {
+                pointsParsed.put(pointsObj[i], i);
+            }
+
+            List<Edge> edges = new ArrayList<>();
+            for (int i = 0; i < pointsObj.length; i++) {
+                for (int j = i + 1; j < pointsObj.length; j++) {
+                    if (i == j) {
+                        continue;
+                    }
+                    var distance = calcDistance(pointsObj[i], pointsObj[j]);
+                    edges.add(new Edge(pointsObj[i], pointsObj[j], distance));
+                }
+            }
+            edges.sort(Comparator.comparingInt(Edge::distance));
+            UnionFind unionFind = new UnionFind(edges.size());
+
+            int cost = 0;
+            for (final Edge edge : edges) {
+                int a = pointsParsed.get(edge.from());
+                int b = pointsParsed.get(edge.to());
+                if (unionFind.union(a, b)) {
+                    cost += edge.distance();
+                }
+            }
+            return cost;
+        }
+
+        private int calcDistance(Point a, Point b) {
+            return Math.abs(a.x() - b.x()) + Math.abs(a.y() - b.y());
+        }
+
+        private record Point(int x, int y) {
+
+            public static Point of(final int[] point) {
+                return new Point(point[0], point[1]);
+            }
+        }
+
+        private record Edge(Point from, Point to, int distance) {
+
+        }
+
+        private static class UnionFind {
+
+            private final Map<Integer, Integer> parents = new HashMap<>();
+            private final Map<Integer, Integer> ranks = new HashMap<>();
+
+            public UnionFind(int n) {
+                for (int i = 0; i < n; i++) {
+                    parents.put(i, i);
+                    ranks.put(i, 0);
+                }
+            }
+
+            public int find(int n) {
+                int p = parents.get(n);
+                while (p != parents.get(p)) {
+                    parents.put(n, parents.get(p));
+                    p = parents.get(p);
+                }
+                return p;
+            }
+
+            public boolean union(int a, int b) {
+                var parentA = find(a);
+                var parentB = find(b);
+                if (parentA == parentB) {
+                    return false;
+                }
+                var rankA = ranks.get(a);
+                var rankB = ranks.get(b);
+                if (rankA > rankB) {
+                    parents.put(parentB, parentA);
+                } else if (rankB > rankA) {
+                    parents.put(parentA, parentB);
+                } else {
+                    parents.put(parentA, parentB);
+                    ranks.put(parentB, ranks.get(parentB) + 1);
+                }
+                return true;
+            }
+        }
+    }
+
+    public static class MySolution_Prims {
 
         public int minCostConnectPoints(int[][] points) {
             if (points.length == 1) {
@@ -46,7 +133,7 @@ public class MinCostConnectPoints {
                         .add(new Edge(pointsObj[j], distance));
                 }
             }
-            PriorityQueue<Edge> queue = new PriorityQueue<>((a, b) -> a.distance() - b.distance());
+            PriorityQueue<Edge> queue = new PriorityQueue<>(Comparator.comparingInt(Edge::distance));
             HashSet<Point> visited = new HashSet<>();
             Point start = pointsObj[0];
             visited.add(start);
@@ -88,7 +175,7 @@ public class MinCostConnectPoints {
         }
     }
 
-    public static class Neetcode {
+    public static class Neetcode_Prims {
 
         public int minCostConnectPoints(int[][] points) {
             int N = points.length;
@@ -111,7 +198,7 @@ public class MinCostConnectPoints {
             minH.offer(new int[]{0, 0});
             while (visit.size() < N) {
                 int[] curr = minH.poll();
-                int cost = curr[0];
+                int cost = Objects.requireNonNull(curr)[0];
                 int i = curr[1];
                 if (visit.contains(i)) {
                     continue;

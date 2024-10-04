@@ -1,6 +1,7 @@
-package com.sedykh.prims_min_spannig_tree;
+package com.sedykh.min_spannig_tree;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -16,6 +17,7 @@ import java.util.PriorityQueue;
  */
 public class PrimsMinSpanningTree {
 
+    @SuppressWarnings("unchecked")
     public int minimumSpanningTree(List<List<Integer>> edges, int n) {
         List<int[]>[] adjustments = new List[n];
 
@@ -38,7 +40,7 @@ public class PrimsMinSpanningTree {
         visited[0] = true;
         int weight = 0;
         int treeSize = 0;
-        PriorityQueue<int[]> queue = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        PriorityQueue<int[]> queue = new PriorityQueue<>(Comparator.comparingInt(a -> a[1]));
         List<int[]> adjustmentFirst = adjustments[0];
         queue.addAll(adjustmentFirst);
 

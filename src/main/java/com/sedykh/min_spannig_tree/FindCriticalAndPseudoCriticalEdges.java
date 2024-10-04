@@ -1,9 +1,6 @@
-package com.sedykh.prims_min_spannig_tree;
+package com.sedykh.min_spannig_tree;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * 1489. Find Critical and Pseudo-Critical Edges in Minimum Spanning Tree
@@ -21,7 +18,112 @@ import java.util.PriorityQueue;
  */
 public class FindCriticalAndPseudoCriticalEdges {
 
-    public static class MySolution {
+    public static class MySolution_Kruskals {
+
+        public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
+            ArrayList<Integer> criticalEdges = new ArrayList<>();
+            ArrayList<Integer> pseudoCriticalEdges = new ArrayList<>();
+
+            for (int i = 0; i < edges.length; i++) {
+                int[] edge = edges[i];
+                edge = Arrays.copyOf(edge, edge.length + 1);
+                edge[3] = i;
+                edges[i] = edge;
+            }
+
+            Arrays.sort(edges, Comparator.comparingInt((int[] a) -> a[2]));
+
+            int minWeight = findMSTWeightKruskals(n, edges, -1, -1);
+
+            for (int i = 0; i < edges.length; i++) {
+                if (minWeight < findMSTWeightKruskals(n, edges, i, -1)) {
+                    criticalEdges.add(edges[i][3]);
+                } else if (minWeight == findMSTWeightKruskals(n, edges, -1, i)) {
+                    pseudoCriticalEdges.add(edges[i][3]);
+                }
+            }
+
+            ArrayList<List<Integer>> result = new ArrayList<>();
+            // hack to solve assert in tests problems.
+            Collections.sort(criticalEdges);
+            Collections.sort(pseudoCriticalEdges);
+            result.add(criticalEdges);
+            result.add(pseudoCriticalEdges);
+            return result;
+        }
+
+        private int findMSTWeightKruskals(int n, int[][] edges, int bannedEdgeNum, int includeEdgeNum) {
+            int weight = 0;
+            UnionFind uf = new UnionFind(n);
+            if (includeEdgeNum != -1) {
+                weight += edges[includeEdgeNum][2];
+                uf.union(edges[includeEdgeNum][0], edges[includeEdgeNum][1]);
+            }
+
+            for (int i = 0; i < edges.length; i++) {
+                if (i == bannedEdgeNum)
+                    continue;
+
+                if (uf.find(edges[i][0]) == uf.find(edges[i][1]))
+                    continue;
+
+                uf.union(edges[i][0], edges[i][1]);
+                weight += edges[i][2];
+            }
+
+            for (int i = 0; i < n; i++) {
+                if (uf.find(i) != uf.find(0))
+                    return Integer.MAX_VALUE;
+            }
+            return weight;
+        }
+
+        private static class UnionFind {
+
+            private final Map<Integer, Integer> parents = new HashMap<>();
+            private final Map<Integer, Integer> ranks = new HashMap<>();
+
+            public UnionFind(int n) {
+                for (int i = 0; i < n; i++) {
+                    parents.put(i, i);
+                    ranks.put(i, 0);
+                }
+            }
+
+            public int find(int n) {
+                int p = parents.get(n);
+                while (p != parents.get(p)) {
+                    parents.put(n, parents.get(p));
+                    p = parents.get(p);
+                }
+                return p;
+            }
+
+            public boolean union(int a, int b) {
+                var parentA = find(a);
+                var parentB = find(b);
+
+                if (parentB == parentA) {
+                    return false;
+                }
+
+                var rankA = ranks.get(parentA);
+                var rankB = ranks.get(parentB);
+
+                if (rankA > rankB) {
+                    parents.put(parentB, parentA);
+                } else if (rankA < rankB) {
+                    parents.put(parentA, parentB);
+                } else {
+                    parents.put(parentA, parentB);
+                    ranks.put(rankB, ranks.get(rankB) + 1);
+                }
+                return true;
+            }
+        }
+    }
+
+    public static class MySolution_Prims {
 
         public List<List<Integer>> findCriticalAndPseudoCriticalEdges(int n, int[][] edges) {
             ArrayList<List<Integer>> result = new ArrayList<>();
@@ -30,14 +132,14 @@ public class FindCriticalAndPseudoCriticalEdges {
             result.add(criticalEdges);
             result.add(pseudoCriticalEdges);
 
-            var minWeight = findWeight(n, edges, -1, -1);
+            var minWeight = findMSTWeightPrims(n, edges, -1, -1);
 
             for (int i = 0; i < edges.length; i++) {
-                var weightWithoutEdge = findWeight(n, edges, i, -1);
+                var weightWithoutEdge = findMSTWeightPrims(n, edges, i, -1);
                 if (weightWithoutEdge > minWeight) {
                     criticalEdges.add(i);
                 } else {
-                    var weightWithEdge = findWeight(n, edges, -1, i);
+                    var weightWithEdge = findMSTWeightPrims(n, edges, -1, i);
                     if (minWeight == weightWithEdge) {
                         pseudoCriticalEdges.add(i);
                     }
@@ -46,7 +148,7 @@ public class FindCriticalAndPseudoCriticalEdges {
             return result;
         }
 
-        private int findWeight(final int n, final int[][] edges, final int bannedEdge, int forcedEdge) {
+        private int findMSTWeightPrims(final int n, final int[][] edges, final int bannedEdge, int forcedEdge) {
             var treeWithEdge = buildMST(n, edges, bannedEdge, forcedEdge);
             if (treeWithEdge.size() != n - 1) {
                 return Integer.MAX_VALUE;

@@ -1,6 +1,8 @@
 package com.sedykh.graphs;
 
+import com.sedykh.topological_sort.CourseSchedule;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

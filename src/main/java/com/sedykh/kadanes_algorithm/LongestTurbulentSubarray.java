@@ -1,6 +1,8 @@
 package com.sedykh.kadanes_algorithm;
 
 /**
+ * 978. Longest Turbulent Subarray
+ * <p>
  * Given an integer array arr, return the length of a maximum size turbulent subarray of arr.
  * <p>
  * A subarray is turbulent if the comparison sign flips between each adjacent

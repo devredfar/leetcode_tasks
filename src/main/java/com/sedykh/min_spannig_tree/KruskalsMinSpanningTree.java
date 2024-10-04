@@ -1,5 +1,6 @@
-package com.sedykh.kruskals_min_spannig_tree;
+package com.sedykh.min_spannig_tree;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class KruskalsMinSpanningTree {
 
     public int minimumSpanningTree(List<List<Integer>> edges, int n) {
         UnionFind unionFind = new UnionFind(n);
-        edges.sort((a, b) -> a.get(2) - b.get(2));
+        edges.sort(Comparator.comparingInt(a -> a.get(2)));
         int totalWeight = 0;
         int count = 0;
         for (List<Integer> edge : edges) {
