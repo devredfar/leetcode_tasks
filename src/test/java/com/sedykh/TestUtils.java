@@ -17,14 +17,14 @@ public class TestUtils {
     private TestUtils() {
     }
 
-    public static void containsAllInAnyOrder(List<List<Integer>> actual, List<List<Integer>> expected) {
-        for (List<Integer> expectedSubList : expected) {
+    public static <T> void containsAllInAnyOrder(List<List<T>> actual, List<List<T>> expected) {
+        for (List<T> expectedSubList : expected) {
             assertThat("Actual should contain sublist: " + expectedSubList + ", but contains: " + actual,
                 actual, hasItem(equalTo(expectedSubList)));
         }
     }
 
-    public static void equalsInAnyOrder(List<List<Integer>> actual, List<List<Integer>> expected) {
+    public static <T> void equalsInAnyOrder(List<List<T>> actual, List<List<T>> expected) {
         containsAllInAnyOrder(actual, expected);
         containsAllInAnyOrder(expected, actual);
     }
@@ -54,7 +54,7 @@ public class TestUtils {
             ? split[0].replaceAll("\\[", "")
             : null;
         split[split.length - 1] = split[split.length - 1] != null
-            ? split[split.length - 1].replaceAll("\\]", "")
+                ? split[split.length - 1].replaceAll("]", "")
             : null;
         return split;
     }

@@ -1,12 +1,10 @@
 package com.sedykh.union_find;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
+ * 721. Accounts Merge
+ * <p>
  * Given a list of accounts where each element accounts[i] is a list of strings,
  * where the first element accounts[i][0] is a name, and the rest of the elements
  * are emails representing emails of the account.
@@ -21,6 +19,7 @@ import java.util.Map;
  * The accounts themselves can be returned in any order.
  */
 public class AccountsMerge {
+
     public List<List<String>> accountsMerge(List<List<String>> accounts) {
         UnionFind unionFind = new UnionFind(accounts.size());
         HashMap<String, Integer> emailsToAccountIds = new HashMap<>();
