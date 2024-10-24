@@ -1,5 +1,6 @@
 package com.sedykh.dp.zero_one_knapsack;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -15,6 +16,10 @@ import java.util.HashMap;
  */
 public class FindTargetSumWays {
 
+    /**
+     * Time Complexity: (O(n * S)), where S is the sum of the array.
+     * Space Complexity: (O(S))
+     */
     public static class DPWithMemo {
 
         public int findTargetSumWays(int[] nums, int target) {
@@ -31,6 +36,53 @@ public class FindTargetSumWays {
                 map = newMap;
             }
             return map.getOrDefault(target, 0);
+        }
+    }
+
+    public static class Optimal {
+        private int countPartitionsUtil(int i, int target, int[] arr, int[][] cache) {
+            if (i == 0) {
+                if (target == 0 && arr[0] == 0)
+                    return 2;
+                if (target == 0 || target == arr[0])
+                    return 1;
+                return 0;
+            }
+
+            if (cache[i][target] != -1)
+                return cache[i][target];
+
+            int notTaken = countPartitionsUtil(i - 1, target, arr, cache);
+            int taken = 0;
+
+            if (arr[i] <= target)
+                taken = countPartitionsUtil(i - 1, target - arr[i], arr, cache);
+
+            return cache[i][target] = (notTaken + taken);
+        }
+
+        public int findTargetSumWays(int[] nums, int target) {
+            int totSum = 0;
+
+            for (int num : nums) {
+                totSum += num;
+            }
+
+            int remainingSum = totSum - target;
+            if (remainingSum < 0)
+                return 0;
+            //but why?
+            if (remainingSum % 2 == 1)
+                return 0;
+
+            int s2 = remainingSum / 2;
+
+            int[][] cache = new int[nums.length][s2 + 1];
+
+            for (int[] row : cache)
+                Arrays.fill(row, -1);
+
+            return countPartitionsUtil(nums.length - 1, s2, nums, cache);
         }
     }
 }
