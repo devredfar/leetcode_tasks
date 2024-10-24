@@ -31,6 +31,7 @@ public class SwimInWater {
         PriorityQueue<int[]> backlog = new PriorityQueue<>((a, b) -> a[2] - b[2]);
         boolean[][] visited = new boolean[maxRows][maxCols];
 
+        // new int[]{ row, col, elevation}
         backlog.add(new int[]{0, 0, grid[0][0]});
         visited[0][0] = true;
 

@@ -1,6 +1,8 @@
 package com.sedykh.kadanes_algorithm;
 
 /**
+ * 918. Maximum Sum Circular Subarray
+ * <p>
  * Given a circular integer array nums of length n,
  * return the maximum possible sum of a non-empty subarray of nums.
  * <p>

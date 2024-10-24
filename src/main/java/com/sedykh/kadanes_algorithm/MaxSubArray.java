@@ -1,6 +1,8 @@
 package com.sedykh.kadanes_algorithm;
 
 /**
+ * 53. Maximum Subarray
+ * <p>
  * Given an integer array nums, find the subarray
  *  with the largest sum, and return its sum.
  */
@@ -18,6 +20,3 @@ public class MaxSubArray {
         return sum;
     }
 }
-
-
-// -5 1 4 3 -7 10 10
