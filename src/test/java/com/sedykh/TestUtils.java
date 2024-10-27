@@ -60,6 +60,7 @@ public class TestUtils {
     }
 
     public static int[][] parseToArray2dArray(String input) {
+        input = input.replaceAll("\\r?\\n", "");
         // Removes surrounding brackets
         String[] parts = splitStringToParts(input);
         int[][] result = new int[parts.length][];
@@ -70,7 +71,7 @@ public class TestUtils {
             result[i] = new int[numbers.length];
 
             for (int j = 0; j < numbers.length; j++) {
-                result[i][j] = Integer.parseInt(numbers[j]);
+                result[i][j] = Integer.parseInt(numbers[j].trim());
             }
         }
 

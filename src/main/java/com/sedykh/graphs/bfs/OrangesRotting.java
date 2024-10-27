@@ -1,4 +1,4 @@
-package com.sedykh.graphs;
+package com.sedykh.graphs.bfs;
 
 import java.util.LinkedList;
 

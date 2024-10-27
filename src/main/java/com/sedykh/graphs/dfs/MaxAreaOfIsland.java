@@ -1,4 +1,4 @@
-package com.sedykh.graphs;
+package com.sedykh.graphs.dfs;
 
 /**
  * 695. Max Area of Island

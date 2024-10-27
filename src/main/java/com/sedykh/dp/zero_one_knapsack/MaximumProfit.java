@@ -66,32 +66,30 @@ public class MaximumProfit {
     }
 
     public static class OptimizedMemorization {
-        public int maximumProfit(List<Integer> profit, List<Integer> weight, int capacity) {
-            int N = profit.size();
-            Integer[] dp = new Integer[capacity + 1];
-            Arrays.fill(dp, 0);
+        public int maximumProfit(List<Integer> profits, List<Integer> weights, int maxCapacity) {
+            int itemCount = profits.size();
+            int[] profitCache = new int[maxCapacity + 1]; // Array to store max profit for each capacity
 
-            // Fill the first row to reduce edge cases
-            for (int c = 0; c <= capacity; c++) {
-                if (weight.get(0) <= c) {
-                    dp[c] = profit.get(0);
+            // Initialize profitCache array for the first item
+            for (int capacity = 0; capacity <= maxCapacity; capacity++) {
+                if (weights.get(0) <= capacity) {
+                    profitCache[capacity] = profits.get(0);
                 }
             }
 
-            for (int i = 1; i < N; i++) {
-                Integer[] curRow = new Integer[capacity + 1];
-                Arrays.fill(curRow, 0);
-                for (int c = 1; c <= capacity; c++) {
-                    int skip = dp[c];
-                    int include = 0;
-                    if (c - weight.get(i) >= 0) {
-                        include = profit.get(i) + dp[c - weight.get(i)];
-                    }
-                    curRow[c] = Math.max(include, skip);
+            // Process each item and calculate the max profit at each capacity level
+            for (int itemIndex = 1; itemIndex < itemCount; itemIndex++) {
+                // Traverse capacities in reverse to prevent overwriting values prematurely
+                for (int capacity = maxCapacity; capacity >= weights.get(itemIndex); capacity--) {
+                    // Calculate profit if including the current item
+                    int profitWithItem = profits.get(itemIndex) + profitCache[capacity - weights.get(itemIndex)];
+                    // Update profitCache array with the maximum of including or excluding the item
+                    profitCache[capacity] = Math.max(profitCache[capacity], profitWithItem);
                 }
-                dp = curRow;
             }
-            return dp[capacity];
+
+            // Maximum profit for the given capacity
+            return profitCache[maxCapacity];
         }
     }
 }

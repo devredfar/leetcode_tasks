@@ -1,6 +1,8 @@
 package com.sedykh.graphs;
 
+import com.sedykh.graphs.bfs.ShortestPathBinaryMatrix;
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class ShortestPathBinaryMatrixTest {

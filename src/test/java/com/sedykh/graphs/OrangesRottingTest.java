@@ -1,5 +1,6 @@
 package com.sedykh.graphs;
 
+import com.sedykh.graphs.bfs.OrangesRotting;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

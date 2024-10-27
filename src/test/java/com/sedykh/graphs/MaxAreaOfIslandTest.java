@@ -1,5 +1,6 @@
 package com.sedykh.graphs;
 
+import com.sedykh.graphs.dfs.MaxAreaOfIsland;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
